@@ -3,3 +3,4 @@ include ':kv'
 include ':kv-annotation'
 include ':app'
 rootProject.name = "kv"
+include ':kv-runtime'
