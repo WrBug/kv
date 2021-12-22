@@ -1,7 +1,7 @@
 package com.wrbug.kv.compile
 
 import com.wrbug.kv.annotation.KV
-import java.io.File
+import com.wrbug.kv.compile.runner.KVTaskRunner
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
@@ -22,7 +22,10 @@ class KVProcessor : AbstractProcessor() {
     override fun getSupportedAnnotationTypes(): MutableSet<String> =
         hashSetOf(KV::class.java.canonicalName)
 
-    override fun process(p0: MutableSet<out TypeElement>?, p1: RoundEnvironment?): Boolean {
+    override fun process(p0: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
+        roundEnv.getElementsAnnotatedWith(KV::class.java).forEach {
+            KVTaskRunner(it).safeRun()
+        }
         return false
     }
 }
