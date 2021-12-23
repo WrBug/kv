@@ -1,6 +1,9 @@
 package com.wrbug.kv.compile
 
 import com.wrbug.kv.annotation.KV
+import com.wrbug.kv.annotation.KVDataProvider
+import com.wrbug.kv.compile.runner.DataProviderCreatorTaskRunner
+import com.wrbug.kv.compile.runner.DataProviderManagerTaskRunner
 import com.wrbug.kv.compile.runner.KVTaskRunner
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
@@ -20,12 +23,16 @@ class KVProcessor : AbstractProcessor() {
 
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> =
-        hashSetOf(KV::class.java.canonicalName)
+        hashSetOf(KV::class.java.canonicalName, KVDataProvider::class.java.canonicalName)
 
     override fun process(p0: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
         roundEnv.getElementsAnnotatedWith(KV::class.java).forEach {
             KVTaskRunner(it).safeRun()
+            DataProviderCreatorTaskRunner(it).safeRun()
         }
-        return false
+        roundEnv.getElementsAnnotatedWith(KVDataProvider::class.java).toList().getOrNull(0)?.let {
+            DataProviderManagerTaskRunner(it).safeRun()
+        }
+        return true
     }
 }

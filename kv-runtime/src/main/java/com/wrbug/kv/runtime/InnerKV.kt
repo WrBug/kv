@@ -5,7 +5,6 @@ import com.wrbug.kv.runtime.compileonly.DataProviderManager
 object InnerKV {
 
     fun init(context: Any) {
-        DataProviderManager.init()
     }
 
     fun getDataProvider(): Any? {

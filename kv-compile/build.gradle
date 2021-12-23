@@ -12,6 +12,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.squareup:javapoet:1.11.1'
     implementation project(':kv-annotation')
+    implementation project(':kv-runtime')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation files("${System.properties['java.home']}/../lib/tools.jar")
 }
