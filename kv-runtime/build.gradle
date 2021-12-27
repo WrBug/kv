@@ -9,6 +9,7 @@ java {
 }
 jar {
     exclude 'com/wrbug/kv/runtime/compileonly/DataProviderManager*'
+    exclude 'com/wrbug/kv/runtime/compileonly/ImplManager*'
 }
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

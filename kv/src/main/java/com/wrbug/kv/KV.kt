@@ -12,6 +12,11 @@ object KV {
     }
 
     @JvmStatic
+    fun <T> get(clazz: Class<T>): T? {
+        return InnerKV.get(clazz)
+    }
+
+    @JvmStatic
     fun getDataProvider(): DataProvider {
         return InnerKV.getDataProvider() as? DataProvider ?: SharedPreferenceDataProvider()
     }

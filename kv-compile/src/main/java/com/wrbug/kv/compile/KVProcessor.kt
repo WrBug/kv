@@ -4,7 +4,8 @@ import com.wrbug.kv.annotation.KV
 import com.wrbug.kv.annotation.KVDataProvider
 import com.wrbug.kv.compile.runner.DataProviderCreatorTaskRunner
 import com.wrbug.kv.compile.runner.DataProviderManagerTaskRunner
-import com.wrbug.kv.compile.runner.KVTaskRunner
+import com.wrbug.kv.compile.runner.ImplManagerTaskRunner
+import com.wrbug.kv.compile.runner.KVImplTaskRunner
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
@@ -26,10 +27,13 @@ class KVProcessor : AbstractProcessor() {
         hashSetOf(KV::class.java.canonicalName, KVDataProvider::class.java.canonicalName)
 
     override fun process(p0: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
+        val runner = ImplManagerTaskRunner()
         roundEnv.getElementsAnnotatedWith(KV::class.java).forEach {
-            KVTaskRunner(it).safeRun()
-            DataProviderCreatorTaskRunner(it).safeRun()
+            KVImplTaskRunner(it).safeRun()
+            runner.addElement(it)
+//            DataProviderCreatorTaskRunner(it).safeRun()
         }
+        runner.run()
         roundEnv.getElementsAnnotatedWith(KVDataProvider::class.java).toList().getOrNull(0)?.let {
             DataProviderManagerTaskRunner(it).safeRun()
         }

@@ -3,13 +3,14 @@ package com.wrbug.kv.compile.runner
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
+import com.wrbug.kv.compile.util.RUNTIME_ONLY_PACKAGE
 import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 
 class DataProviderManagerTaskRunner(element: Element) : TaskRunner(element) {
     companion object {
         private val MANAGER_CLASS =
-            ClassName.get("com.wrbug.kv.runtime.compileonly", "DataProviderManager")
+            ClassName.get(RUNTIME_ONLY_PACKAGE, "DataProviderManager")
         private const val METHOD_GET_INSTANCE = "getDataProvider"
     }
 

@@ -18,14 +18,16 @@ class DataProviderCreatorTaskRunner(element: Element) : TaskRunner(element) {
         spec.addMethod(buildNewInstanceMethod().build())
         saveClass(spec, packageName)
     }
+
     private fun buildNewInstanceMethod(): MethodSpec.Builder {
         return MethodSpec.methodBuilder(METHOD_NEW_INSTANCE)
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .addAnnotation(Override::class.java)
             .returns(Any::class.java)
             .addStatement(
-                "return new \$T()",
-                ClassName.get(packageName, className + KVTaskRunner.SUFFIX)
+                "return \$T.\$L()",
+                ClassName.get(packageName, className + KVImplTaskRunner.SUFFIX),
+                KVImplTaskRunner.METHOD_GET_INSTANCE
             )
     }
 
