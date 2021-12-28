@@ -16,7 +16,7 @@ class KVImplTaskRunner(element: Element) : TaskRunner(element) {
         const val SUFFIX = "Impl"
         const val METHOD_GET_INSTANCE = "getInstance"
         private const val CLASS_HOLDER = "Holder"
-        private const val FIELD_PROVIDER = "provider"
+        const val FIELD_PROVIDER = "provider"
         private const val FIELD_INSTANCE = "instance"
         private const val METHOD_INIT = "init"
         private const val METHOD_GET_APPLICATION = "getApplication"
@@ -54,7 +54,7 @@ class KVImplTaskRunner(element: Element) : TaskRunner(element) {
                 FIELD_PROVIDER,
                 METHOD_INIT,
                 CLASS_ENV,
-                METHOD_GET_APPLICATION, scope, name
+                METHOD_GET_APPLICATION, name, scope
             )
     }
 

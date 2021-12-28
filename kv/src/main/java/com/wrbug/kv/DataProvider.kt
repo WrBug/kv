@@ -1,6 +1,7 @@
 package com.wrbug.kv
 
 import android.content.Context
+import java.lang.reflect.Type
 
 /**
  *
@@ -18,17 +19,24 @@ interface DataProvider {
     fun getString(key: String?, defaultValue: String?): String?
 
     fun putInt(key: String?, value: Int)
-    fun getInt(key: String?, value: Int): Int?
+    fun getInt(key: String?, value: Int): Int
 
     fun putLong(key: String?, value: Long)
-    fun getLong(key: String?, value: Long): Long?
+    fun getLong(key: String?, value: Long): Long
 
     fun putFloat(key: String?, value: Float)
-    fun getFloat(key: String?, value: Float): Float?
+    fun getFloat(key: String?, value: Float): Float
+
+
+    fun putDouble(key: String?, value: Double)
+    fun getDouble(key: String?, value: Double): Double
 
     fun putBoolean(key: String?, value: Boolean)
-    fun getBoolean(key: String?, value: Boolean): Boolean?
+    fun getBoolean(key: String?, value: Boolean): Boolean
 
+    fun put(key: String?, value: Any?, valueType: Type?)
+
+    fun get(key: String?, valueType: Type?): Any?
 
     fun remove(key: String?)
 

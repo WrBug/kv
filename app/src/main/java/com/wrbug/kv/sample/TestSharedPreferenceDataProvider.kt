@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.wrbug.kv.DataProvider
 import com.wrbug.kv.annotation.KVDataProvider
+import com.wrbug.kv.util.fromJson
+import com.wrbug.kv.util.toJson
+import java.lang.reflect.Type
 
 
 /**
@@ -33,32 +36,49 @@ class TestSharedPreferenceDataProvider : DataProvider {
         sharedPreferences.edit { putInt(key, value) }
     }
 
-    override fun getInt(key: String?, value: Int): Int? {
-        return sharedPreferences?.getInt(key, value)
+    override fun getInt(key: String?, value: Int): Int {
+        return sharedPreferences?.getInt(key, value) ?: value
     }
 
     override fun putLong(key: String?, value: Long) {
         sharedPreferences.edit { putLong(key, value) }
     }
 
-    override fun getLong(key: String?, value: Long): Long? {
-        return sharedPreferences?.getLong(key, value)
+    override fun getLong(key: String?, value: Long): Long {
+        return sharedPreferences?.getLong(key, value) ?: value
     }
 
     override fun putFloat(key: String?, value: Float) {
         sharedPreferences.edit { putFloat(key, value) }
     }
 
-    override fun getFloat(key: String?, value: Float): Float? {
-        return sharedPreferences?.getFloat(key, value)
+    override fun getFloat(key: String?, value: Float): Float {
+        return sharedPreferences?.getFloat(key, value) ?: value
+    }
+
+    override fun putDouble(key: String?, value: Double) {
+        sharedPreferences.edit { putString(key, value.toString()) }
+    }
+
+    override fun getDouble(key: String?, value: Double): Double {
+        return sharedPreferences?.getString(key, value.toString())?.toDouble() ?: value
     }
 
     override fun putBoolean(key: String?, value: Boolean) {
         sharedPreferences.edit { putBoolean(key, value) }
     }
 
-    override fun getBoolean(key: String?, value: Boolean): Boolean? {
-        return sharedPreferences?.getBoolean(key, value)
+    override fun getBoolean(key: String?, value: Boolean): Boolean {
+        return sharedPreferences?.getBoolean(key, value) ?: value
+    }
+
+    override fun put(key: String?, value: Any?, valueType: Type?) {
+        sharedPreferences.edit { putString(key, value.toJson()) }
+    }
+
+    override fun get(key: String?, valueType: Type?): Any? {
+        valueType ?: return null
+        return sharedPreferences?.getString(key, null).fromJson<Any>(valueType)
     }
 
     override fun remove(key: String?) {
