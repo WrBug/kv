@@ -1,7 +1,6 @@
 package com.wrbug.kv
 
 import android.app.Application
-import com.wrbug.kv.dataprovider.SharedPreferenceDataProvider
 import com.wrbug.kv.runtime.InnerKV
 
 object KV {

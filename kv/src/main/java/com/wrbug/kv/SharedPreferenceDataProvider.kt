@@ -1,8 +1,7 @@
-package com.wrbug.kv.dataprovider
+package com.wrbug.kv
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.wrbug.kv.DataProvider
 import com.wrbug.kv.util.fromJson
 import com.wrbug.kv.util.toJson
 import java.lang.reflect.Type
