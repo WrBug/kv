@@ -8,5 +8,6 @@ interface AccountLocalSource {
     val count: Int
     val test: Short
     val amount: Double
-    fun isVip(): Boolean
+    fun isVip(default: Boolean): Boolean
+    fun isMale(): Boolean
 }

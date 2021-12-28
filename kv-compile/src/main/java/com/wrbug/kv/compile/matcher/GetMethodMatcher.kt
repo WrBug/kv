@@ -8,17 +8,14 @@ import com.sun.tools.javac.code.Symbol
 import com.sun.tools.javac.code.Type
 import com.sun.tools.javac.code.TypeTag
 import com.wrbug.kv.annotation.KVGet
+import com.wrbug.kv.compile.codebuilder.CodeBuilderManager
 import com.wrbug.kv.compile.runner.KVImplTaskRunner
 import com.wrbug.kv.compile.util.toFirstLowerCase
 import javax.lang.model.element.Modifier
 
 object GetMethodMatcher : MethodMatcher {
+    const val PARAMETER_DEFAULT_VALUE = "defaultValue"
     private const val METHOD_GET_STRING = "getString"
-    private const val METHOD_GET_INT = "getInt"
-    private const val METHOD_GET_LONG = "getLong"
-    private const val METHOD_GET_FLOAT = "getFloat"
-    private const val METHOD_GET_DOUBLE = "getDouble"
-    private const val METHOD_GET_BOOLEAN = "getBoolean"
     private const val METHOD_GET = "get"
     override fun match(symbol: Symbol.MethodSymbol): Boolean {
         if (symbol.getAnnotation(KVGet::class.java) == null) {
@@ -49,43 +46,17 @@ object GetMethodMatcher : MethodMatcher {
             .returns(ClassName.get(symbol.returnType))
         if (param != null) {
             builder.addParameter(
-                ParameterSpec.builder(TypeName.get(param.asType()), "arg_0", Modifier.FINAL)
+                ParameterSpec.builder(
+                    TypeName.get(param.asType()),
+                    PARAMETER_DEFAULT_VALUE,
+                    Modifier.FINAL
+                )
                     .addModifiers(param.modifiers)
                     .build()
             )
         }
-        if (param != null) {
-            builder.addStatement("return arg_0")
-        } else if (symbol.returnType.isPrimitive) {
-            when (symbol.returnType.tag) {
-                TypeTag.BYTE, TypeTag.CHAR, TypeTag.SHORT,
-                TypeTag.INT -> builder.addStatement(
-                    "return (\$T)\$L.\$L(\"\$L\",0)",
-                    symbol.returnType,
-                    KVImplTaskRunner.FIELD_PROVIDER,
-                    METHOD_GET_INT,
-                    key
-                )
-                TypeTag.LONG -> builder.addStatement(
-                    "return \$L.\$L(\"\$L\",0)", KVImplTaskRunner.FIELD_PROVIDER,
-                    METHOD_GET_LONG, key
-                )
-                TypeTag.FLOAT -> builder.addStatement(
-                    "return \$L.\$L(\"\$L\",0)", KVImplTaskRunner.FIELD_PROVIDER,
-                    METHOD_GET_FLOAT, key
-                )
-                TypeTag.DOUBLE -> builder.addStatement(
-                    "return \$L.\$L(\"\$L\",0)", KVImplTaskRunner.FIELD_PROVIDER,
-                    METHOD_GET_DOUBLE, key
-                )
-                TypeTag.BOOLEAN -> builder.addStatement(
-                    "return \$L.\$L(\"\$L\",false)", KVImplTaskRunner.FIELD_PROVIDER,
-                    METHOD_GET_BOOLEAN, key
-                )
-            }
-        } else {
-            builder.addStatement("return null")
-        }
+        CodeBuilderManager.getCodeBuilder(symbol.returnType)
+            ?.buildGetCode(builder, symbol, key)
         return builder
     }
 }
