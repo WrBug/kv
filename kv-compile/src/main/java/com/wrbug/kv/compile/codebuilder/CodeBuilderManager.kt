@@ -5,6 +5,7 @@ import com.sun.tools.javac.code.Type
 object CodeBuilderManager {
     private val list = arrayOf(
         IntCodeBuilder,
+        StringCodeBuilder,
         LongCodeBuilder,
         FloatCodeBuilder,
         DoubleCodeBuilder,
