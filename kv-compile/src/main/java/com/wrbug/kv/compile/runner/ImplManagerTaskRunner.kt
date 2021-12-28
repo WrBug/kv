@@ -16,6 +16,7 @@ class ImplManagerTaskRunner {
 
     private val matchAndGetMethodBuilder = MethodSpec.methodBuilder(METHOD_MATCH_AND_GET)
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+        .addParameter(Class::class.java, PARAMETER_CLAZZ)
         .returns(Any::class.java)
     private val spec = TypeSpec.classBuilder(CLASS_IMPL_MANAGER)
         .addField(
@@ -34,14 +35,29 @@ class ImplManagerTaskRunner {
                 .beginControlFlow("if(\$L.containsKey(\$L))", FIELD_CACHE, PARAMETER_CLAZZ)
                 .addStatement("return \$L.get(\$L)", FIELD_CACHE, PARAMETER_CLAZZ)
                 .endControlFlow()
-                .addStatement("\$T obj=\$L()", Any::class.java, METHOD_MATCH_AND_GET)
+                .addStatement(
+                    "\$T obj=\$L(\$L)",
+                    Any::class.java,
+                    METHOD_MATCH_AND_GET,
+                    PARAMETER_CLAZZ
+                )
                 .addStatement("\$L.put(\$L, obj)", FIELD_CACHE, PARAMETER_CLAZZ)
                 .addStatement("return obj")
                 .build()
         )
 
     fun addElement(element: Element) {
-
+        val type = TypeName.get(element.asType()) as ClassName
+        matchAndGetMethodBuilder.beginControlFlow(
+            "if (\$L==\$T.class)",
+            PARAMETER_CLAZZ, type
+        )
+            .addStatement(
+                "return \$L.\$L()",
+                ClassName.get(type.packageName(), type.simpleName() + KVImplTaskRunner.SUFFIX),
+                KVImplTaskRunner.METHOD_GET_INSTANCE
+            )
+            .endControlFlow()
     }
 
     fun run() {
