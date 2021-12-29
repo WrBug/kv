@@ -19,6 +19,7 @@ class ImplManagerTaskRunner {
         .addParameter(Class::class.java, PARAMETER_CLAZZ)
         .returns(Any::class.java)
     private val spec = TypeSpec.classBuilder(CLASS_IMPL_MANAGER)
+        .addModifiers(Modifier.PUBLIC)
         .addField(
             FieldSpec.builder(
                 ParameterizedTypeName.get(
