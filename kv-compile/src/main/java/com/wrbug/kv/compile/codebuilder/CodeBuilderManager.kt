@@ -9,7 +9,8 @@ object CodeBuilderManager {
         LongCodeBuilder,
         FloatCodeBuilder,
         DoubleCodeBuilder,
-        BooleanCodeBuilder
+        BooleanCodeBuilder,
+        ObjectCodeBuilder
     )
 
     fun getCodeBuilder(type: Type): CodeBuilder? {

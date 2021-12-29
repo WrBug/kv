@@ -16,6 +16,11 @@ object KV {
     }
 
     @JvmStatic
+    fun setObjectConverter(objectConverter: ObjectConverter) {
+        Env.objectConverter = objectConverter
+    }
+
+    @JvmStatic
     fun getDataProvider(): DataProvider {
         return InnerKV.getDataProvider() as? DataProvider ?: SharedPreferenceDataProvider()
     }

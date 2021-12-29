@@ -34,10 +34,6 @@ interface DataProvider {
     fun putBoolean(key: String?, value: Boolean)
     fun getBoolean(key: String?, value: Boolean): Boolean
 
-    fun put(key: String?, value: Any?, valueType: Type?)
-
-    fun get(key: String?, valueType: Type?): Any?
-
     fun remove(key: String?)
 
     fun clear()

@@ -6,4 +6,6 @@ internal object Env {
     @JvmStatic
     lateinit var application: Application
 
+    @JvmStatic
+    var objectConverter: ObjectConverter = JsonObjectConverter
 }

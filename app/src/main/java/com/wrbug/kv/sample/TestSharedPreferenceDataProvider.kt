@@ -72,15 +72,6 @@ class TestSharedPreferenceDataProvider : DataProvider {
         return sharedPreferences?.getBoolean(key, value) ?: value
     }
 
-    override fun put(key: String?, value: Any?, valueType: Type?) {
-        sharedPreferences.edit { putString(key, value.toJson()) }
-    }
-
-    override fun get(key: String?, valueType: Type?): Any? {
-        valueType ?: return null
-        return sharedPreferences?.getString(key, null).fromJson<Any>(valueType)
-    }
-
     override fun remove(key: String?) {
         sharedPreferences.edit { remove(key) }
     }
