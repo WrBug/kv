@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
+apply from: "$rootDir/maven.gradle"
 
 android {
     compileSdkVersion 31
