@@ -1,0 +1,21 @@
+plugins {
+    id 'groovy'
+    id 'kotlin'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+def GRADLE_VERSION = '3.1.4'
+
+dependencies {
+    implementation localGroovy()
+    implementation gradleApi()
+    implementation "com.android.tools.build:gradle:$GRADLE_VERSION"
+    implementation "com.android.tools.build:builder:$GRADLE_VERSION"
+    implementation 'org.javassist:javassist:3.25.0-GA'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

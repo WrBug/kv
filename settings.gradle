@@ -1,3 +1,4 @@
+include ':kv-gradle'
 include ':kv-compile'
 include ':kv'
 include ':kv-annotation'
