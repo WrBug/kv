@@ -1,0 +1,12 @@
+apply plugin: 'maven'
+group = 'com.wrbug.kv'
+version = '1.0.0'
+project.archivesBaseName = project.getName()
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //本地的Maven地址设置为 repos
+            repository(url: uri("$rootDir/repo"))
+        }
+    }
+}

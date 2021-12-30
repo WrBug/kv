@@ -1,7 +1,10 @@
+
 plugins {
     id 'groovy'
     id 'kotlin'
 }
+apply from: "$rootDir/maven.gradle"
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7

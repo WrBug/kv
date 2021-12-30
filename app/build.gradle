@@ -3,8 +3,10 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
-
-kapt{
+if (!ignoreGradle) {
+    apply plugin: 'com.wrbug.kv.gradle'
+}
+kapt {
     arguments {
         arg("rootDir", rootDir)
     }
