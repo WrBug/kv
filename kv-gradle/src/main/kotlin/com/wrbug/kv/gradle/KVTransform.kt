@@ -5,10 +5,18 @@ import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.Status
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.wrbug.kv.gradle.task.MergeDataProviderManagerTask
+import com.wrbug.kv.gradle.task.MergeImplManagerTask
 import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.io.FileUtils
+import org.gradle.api.Project
 import java.io.File
 
-class KVTransform : BaseTransform() {
+class KVTransform(project: Project) : BaseTransform() {
+
+    private val tasks =
+        arrayOf(MergeDataProviderManagerTask(project), MergeImplManagerTask(project))
+
     override fun getName() = "KVTransform"
 
     override fun getOutputTypes(): MutableSet<QualifiedContent.ContentType> =
@@ -24,9 +32,9 @@ class KVTransform : BaseTransform() {
 
     override fun safeTransform(transformInvocation: TransformInvocation) {
         val outputProvider = transformInvocation.outputProvider
-        val tmpDeleteEntryMap = HashMap<String, List<String>>()
-        val realDeleteEntryMap = HashMap<String, List<String>>()
-        val copyList = ArrayList<Array<File>>()
+        val tmpDeleteEntryMap = HashMap<String, ArrayList<String>>()
+        val realDeleteEntryMap = HashMap<String, ArrayList<String>>()
+        val copyList = ArrayList<Pair<File, File>>()
         outputProvider.deleteAll()
         transformInvocation.inputs.forEach { input ->
             input.jarInputs.forEach { jarInput ->
@@ -44,9 +52,37 @@ class KVTransform : BaseTransform() {
                     jarInput.scopes,
                     Format.JAR
                 )
-
+                var success = false
+                tasks.forEach {
+                    success = TransformUtils.findClass(
+                        jarInput,
+                        it.relativeClassPath,
+                        it.classPaths,
+                        it.dependencyClassPaths,
+                        tmpDeleteEntryMap
+                    )
+                }
+                if (success) {
+                    realDeleteEntryMap[dest.absolutePath] =
+                        tmpDeleteEntryMap[jarInput.file.absolutePath] ?: arrayListOf()
+                }
+                copyList.add(jarInput.file to dest)
             }
-
+            input.directoryInputs.forEach {
+                copyList.forEach {
+                    FileUtils.copyFile(it.first, it.second)
+                }
+                tasks.forEach { task ->
+                    task.mergeClassFile(it.file, realDeleteEntryMap)
+                }
+                val dest = outputProvider.getContentLocation(
+                    it.name,
+                    it.contentTypes,
+                    it.scopes,
+                    Format.DIRECTORY
+                )
+                FileUtils.copyDirectory(it.file, dest)
+            }
         }
     }
 

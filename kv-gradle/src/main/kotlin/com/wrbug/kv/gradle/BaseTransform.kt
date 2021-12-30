@@ -6,7 +6,7 @@ import com.android.build.api.transform.TransformInvocation
 abstract class BaseTransform : Transform() {
 
     override fun transform(transformInvocation: TransformInvocation?) {
-        kotlin.runCatching {
+        runCatching {
             transformInvocation?.let {
                 safeTransform(it)
             }
