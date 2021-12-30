@@ -19,13 +19,12 @@ class MergeDataProviderManagerTask(project: Project) : BaseTask(project) {
         get() = "com.wrbug.kv.runtime.compileonly.DataProviderManager"
 
 
-    override fun mergeClassFile(dir: File, deleteEntryMap: HashMap<String, ArrayList<String>>) {
-        println("MergeDataProviderManagerTask")
+    override fun mergeClassFile(dir: File) {
         TransformUtils.mergeClassFile(
             project,
             relativeClassPath,
-            mapOf("getDataProvider" to MethodInfo[false, 0, className]),
-            dir, classPaths, dependencyClassPaths, deleteEntryMap, className
+            mapOf("getDataProvider" to MethodInfo[false, 0, className, "return null;"]),
+            dir, classPaths, dependencyClassPaths, className
         )
 
     }

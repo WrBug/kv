@@ -18,13 +18,12 @@ class MergeImplManagerTask(project: Project) : BaseTask(project) {
     override val className: String
         get() = "com.wrbug.kv.runtime.compileonly.ImplManager"
 
-    override fun mergeClassFile(dir: File, deleteEntryMap: HashMap<String, ArrayList<String>>) {
-        println("MergeImplManagerTask")
+    override fun mergeClassFile(dir: File) {
         TransformUtils.mergeClassFile(
             project,
             relativeClassPath,
-            mapOf("matchAndGet" to MethodInfo[false, 1, className]),
-            dir, classPaths, dependencyClassPaths, deleteEntryMap, className
+            mapOf("matchAndGet" to MethodInfo[false, 1, className, "return null;"]),
+            dir, classPaths, dependencyClassPaths, className
         )
 
     }

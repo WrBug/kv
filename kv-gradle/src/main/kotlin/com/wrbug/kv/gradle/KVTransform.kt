@@ -60,7 +60,7 @@ class KVTransform(project: Project) : BaseTransform() {
                         it.classPaths,
                         it.dependencyClassPaths,
                         tmpDeleteEntryMap
-                    )
+                    ) or success
                 }
                 if (success) {
                     realDeleteEntryMap[dest.absolutePath] =
@@ -72,8 +72,11 @@ class KVTransform(project: Project) : BaseTransform() {
                 copyList.forEach {
                     FileUtils.copyFile(it.first, it.second)
                 }
+                realDeleteEntryMap.forEach { (t, u) ->
+                    TransformUtils.deleteEntry(t, u)
+                }
                 tasks.forEach { task ->
-                    task.mergeClassFile(it.file, realDeleteEntryMap)
+                    task.mergeClassFile(it.file)
                 }
                 val dest = outputProvider.getContentLocation(
                     it.name,

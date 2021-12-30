@@ -10,7 +10,7 @@ abstract class BaseTransform : Transform() {
             transformInvocation?.let {
                 safeTransform(it)
             }
-        }
+        }.getOrThrow()
     }
 
     abstract fun safeTransform(transformInvocation: TransformInvocation)

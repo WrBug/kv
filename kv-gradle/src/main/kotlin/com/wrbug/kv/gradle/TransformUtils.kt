@@ -28,20 +28,15 @@ object TransformUtils {
         dir: File,
         classPaths: ArrayList<File>,
         routeDependencyClassPaths: List<String>,
-        deleteEntryMap: HashMap<String, ArrayList<String>>,
         className: String
     ) {
         if (classPaths.isEmpty()) {
             return
         }
-        val finderFile = findClassFile(dir, relativeClassPath)
-        if (!finderFile.exists() || !finderFile.isFile) {
+        val file = findClassFile(dir, relativeClassPath)
+        if (!file.exists() || !file.isFile) {
             return
         }
-        deleteEntryMap.forEach { (t, u) ->
-            deleteEntry(t, u)
-        }
-        deleteEntryMap.clear()
         classPaths.add(dir)
         val methodsMap = HashMap<String, ArrayList<CtMethod>>()
         methodInfoMap.keys.forEach { key ->
@@ -52,9 +47,9 @@ object TransformUtils {
         classPaths.forEach {
             val classPool = ClassPool(true)
             val classPath = classPool.insertClassPath(it.absolutePath)
-            val finderClass = classPool.get(className)
+            val targetClass = classPool.get(className)
             methodInfoMap.keys.forEach { methodName ->
-                val method = finderClass.getDeclaredMethod(methodName)
+                val method = targetClass.getDeclaredMethod(methodName)
                 if (method != null) {
                     methodsMap[methodName]?.add(method)
                 }
@@ -102,7 +97,7 @@ object TransformUtils {
         }
     }
 
-    fun getAndroidClassPath(project: Project): String {
+    private fun getAndroidClassPath(project: Project): String {
         val properties = Properties()
         val file = project.rootProject.file("local.properties")
         val sdkDir = if (file.exists()) {
@@ -116,16 +111,16 @@ object TransformUtils {
 
     fun findClass(
         jarInput: JarInput,
-        name: String,
+        targetClassName: String,
         relativeClassPath: ArrayList<File>,
         dependencyClassPaths: ArrayList<String>,
         deleteEntryMap: HashMap<String, ArrayList<String>>
     ): Boolean {
         val jarFile = JarFile(jarInput.file)
-        findEntry(jarFile, name)?.let { entry ->
-            val finderFile = File(jarInput.file.parentFile, entry.name)
-            finderFile.parentFile.mkdirs()
-            IOUtils.copy(jarFile.getInputStream(entry), FileOutputStream(finderFile))
+        findEntry(jarFile, targetClassName)?.let { entry ->
+            val file = File(jarInput.file.parentFile, entry.name)
+            file.parentFile.mkdirs()
+            IOUtils.copy(jarFile.getInputStream(entry), FileOutputStream(file))
             relativeClassPath.add(jarInput.file.parentFile)
             val key = jarInput.file.absolutePath
             val list = deleteEntryMap[key] ?: ArrayList<String>().also {

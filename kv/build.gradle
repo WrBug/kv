@@ -36,4 +36,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api 'com.google.code.gson:gson:2.8.9'
     api project(':kv-runtime')
+    api project(':kv-annotation')
 }

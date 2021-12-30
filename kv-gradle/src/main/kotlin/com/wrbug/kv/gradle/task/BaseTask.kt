@@ -21,5 +21,5 @@ abstract class BaseTask(val project: Project) {
 
     abstract val className: String
 
-    abstract fun mergeClassFile(dir: File, deleteEntryMap: HashMap<String, ArrayList<String>>)
+    abstract fun mergeClassFile(dir: File)
 }
