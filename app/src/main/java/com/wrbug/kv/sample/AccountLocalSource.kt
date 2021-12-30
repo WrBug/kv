@@ -5,12 +5,15 @@ import com.wrbug.kv.annotation.KVGet
 
 @KV
 interface AccountLocalSource {
-    val id: Long
+    var id: Long
+    var name: String
     fun isMale(): Boolean
-    fun getUser(): User
-    fun getMap(): Map<String,String>
+    fun setMale(male: Boolean)
+    var user: User
+    fun getMap(): Map<String, String>
 }
 
-class User{
-
+class User {
+    var name: String? = ""
+    var age: Int? = 0
 }

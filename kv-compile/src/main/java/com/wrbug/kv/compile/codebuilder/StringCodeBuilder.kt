@@ -8,8 +8,22 @@ import com.wrbug.kv.compile.runner.KVImplTaskRunner
 
 object StringCodeBuilder : CodeBuilder {
     private const val METHOD_GET_STRING = "getString"
+    private const val METHOD_PUT_STRING = "putString"
+
     override fun isMatch(type: Type): Boolean {
         return type.toString() == String::class.java.canonicalName
+    }
+
+
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$1L.\$2L(\"\$3L\",\$3L)", KVImplTaskRunner.FIELD_PROVIDER,
+            METHOD_PUT_STRING, key
+        )
     }
 
     override fun buildGetCode(

@@ -9,12 +9,21 @@ import com.wrbug.kv.compile.runner.KVImplTaskRunner
 
 object FloatCodeBuilder : CodeBuilder {
     private const val METHOD_GET_FLOAT = "getFloat"
+    private const val METHOD_PUT_FLOAT = "putFloat"
 
     override fun isMatch(type: Type): Boolean {
         return type.isPrimitive && type.tag == TypeTag.FLOAT
     }
 
-    override fun buildPutCode() {
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$1L.\$2L(\"\$3L\",\$3L)", KVImplTaskRunner.FIELD_PROVIDER,
+            METHOD_PUT_FLOAT, key
+        )
     }
 
     override fun buildGetCode(

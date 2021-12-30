@@ -9,13 +9,24 @@ import com.wrbug.kv.compile.runner.KVImplTaskRunner
 
 object BooleanCodeBuilder : CodeBuilder {
     private const val METHOD_GET_BOOLEAN = "getBoolean"
+    private const val METHOD_PUT_BOOLEAN = "putBoolean"
 
     override fun isMatch(type: Type): Boolean {
         return type.isPrimitive && type.tag == TypeTag.BOOLEAN
     }
 
-    override fun buildPutCode() {
+
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$1L.\$2L(\"\$3L\",\$3L)", KVImplTaskRunner.FIELD_PROVIDER,
+            METHOD_PUT_BOOLEAN, key
+        )
     }
+
 
     override fun buildGetCode(
         builder: MethodSpec.Builder,

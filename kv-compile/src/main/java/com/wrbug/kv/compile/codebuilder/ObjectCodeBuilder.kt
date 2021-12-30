@@ -12,8 +12,25 @@ import com.wrbug.kv.compile.util.KV_PACKAGE
 
 object ObjectCodeBuilder : CodeBuilder {
     private const val METHOD_GET_STRING = "getString"
-    val CLASS_OBJECT_CONVERTER = ClassName.get(KV_PACKAGE, "ObjectConverter")
+    private const val METHOD_PUT_STRING = "putString"
+    private val CLASS_OBJECT_CONVERTER = ClassName.get(KV_PACKAGE, "ObjectConverter")
     override fun isMatch(type: Type) = true
+
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$T converter=\$L.getObjectConverter()", CLASS_OBJECT_CONVERTER,
+            CLASS_ENV
+        )
+            .addStatement("\$1T str=converter.convert(\$2L)", String::class.java, key)
+            .addStatement(
+                "\$1L.\$2L(\"\$3L\",str)", KVImplTaskRunner.FIELD_PROVIDER,
+                METHOD_PUT_STRING, key
+            )
+    }
 
     override fun buildGetCode(
         builder: MethodSpec.Builder,
@@ -43,7 +60,7 @@ object ObjectCodeBuilder : CodeBuilder {
                 TypeToken::class.java,
                 symbol.returnType
             )
-            .addStatement("\$1T obj=(\$1T)converter.convert(result,type)",symbol.returnType)
+            .addStatement("\$1T obj=(\$1T)converter.convert(result,type)", symbol.returnType)
             .addStatement("return obj==null?\$L:obj", GetMethodMatcher.PARAMETER_DEFAULT_VALUE)
 
     }

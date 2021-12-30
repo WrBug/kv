@@ -9,12 +9,21 @@ import com.wrbug.kv.compile.runner.KVImplTaskRunner
 
 object DoubleCodeBuilder : CodeBuilder {
     private const val METHOD_GET_DOUBLE = "getDouble"
+    private const val METHOD_PUT_DOUBLE = "putDouble"
 
     override fun isMatch(type: Type): Boolean {
         return type.isPrimitive && type.tag == TypeTag.DOUBLE
     }
 
-    override fun buildPutCode() {
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$1L.\$2L(\"\$3L\",\$3L)", KVImplTaskRunner.FIELD_PROVIDER,
+            METHOD_PUT_DOUBLE, key
+        )
     }
 
     override fun buildGetCode(

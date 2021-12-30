@@ -10,11 +10,20 @@ import com.wrbug.kv.compile.runner.KVImplTaskRunner
 
 object LongCodeBuilder : CodeBuilder {
     private const val METHOD_GET_LONG = "getLong"
+    private const val METHOD_PUT_LONG = "putLong"
     override fun isMatch(type: Type): Boolean {
         return type.isPrimitive && type.tag == TypeTag.LONG
     }
 
-    override fun buildPutCode() {
+    override fun buildPutCode(
+        builder: MethodSpec.Builder,
+        symbol: Symbol.MethodSymbol,
+        key: String
+    ) {
+        builder.addStatement(
+            "\$1L.\$2L(\"\$3L\",\$3L)", KVImplTaskRunner.FIELD_PROVIDER,
+            METHOD_PUT_LONG, key
+        )
     }
 
     override fun buildGetCode(
