@@ -1,0 +1,9 @@
+include(
+    ":app",
+    ":kv",
+    ":kv-runtime",
+    ":kv-annotation",
+    ":kv-compile",
+    ":kv-gradle",
+    ":test_module"
+)

@@ -8,7 +8,6 @@ import javax.tools.Diagnostic
 object Global {
     lateinit var filer: Filer
     lateinit var messager: Messager
-    var rootDir: String = ""
 
     fun log(msg: Any?) {
         messager.printMessage(Diagnostic.Kind.NOTE, msg.toString())

@@ -1,8 +1,0 @@
-include ':test_module'
-include ':kv-gradle'
-include ':kv-compile'
-include ':kv'
-include ':kv-annotation'
-include ':app'
-rootProject.name = "kv"
-include ':kv-runtime'

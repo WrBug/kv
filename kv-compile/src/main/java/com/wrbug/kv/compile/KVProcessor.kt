@@ -16,7 +16,6 @@ class KVProcessor : AbstractProcessor() {
     override fun init(p0: ProcessingEnvironment) {
         Global.messager = p0.messager
         Global.filer = p0.filer
-        Global.rootDir = p0.options["rootDir"] ?: ""
         super.init(p0)
     }
 
