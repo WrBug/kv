@@ -11,6 +11,8 @@ interface AccountLocalSource {
     fun setMale(male: Boolean)
     var user: User
     fun getMap(): Map<String, String>
+
+    fun removeMap()
 }
 
 class User {
