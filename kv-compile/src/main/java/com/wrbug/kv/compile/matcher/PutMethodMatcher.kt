@@ -11,9 +11,11 @@ import com.wrbug.kv.compile.util.toFirstLowerCase
 import javax.lang.model.element.Modifier
 
 object PutMethodMatcher : MethodMatcher {
-    private const val METHOD_PUT = "put"
     override fun match(symbol: Symbol.MethodSymbol): Boolean {
-        if (symbol.getAnnotation(KVPut::class.java) == null && !symbol.name.startsWith("set")) {
+        if (symbol.getAnnotation(KVPut::class.java) == null && (!symbol.name.startsWith("set") || !symbol.name.startsWith(
+                "put"
+            ))
+        ) {
             return false
         }
         if (symbol.returnType.tag != TypeTag.VOID) {
