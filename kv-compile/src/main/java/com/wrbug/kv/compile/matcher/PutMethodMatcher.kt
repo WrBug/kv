@@ -12,9 +12,9 @@ import javax.lang.model.element.Modifier
 
 object PutMethodMatcher : MethodMatcher {
     override fun match(symbol: Symbol.MethodSymbol): Boolean {
-        if (symbol.getAnnotation(KVPut::class.java) == null && (!symbol.name.startsWith("set") || !symbol.name.startsWith(
-                "put"
-            ))
+        if (symbol.getAnnotation(KVPut::class.java) == null
+            && !symbol.name.startsWith("set")
+            && !symbol.name.startsWith("put")
         ) {
             return false
         }
