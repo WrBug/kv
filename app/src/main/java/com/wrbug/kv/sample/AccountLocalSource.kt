@@ -13,6 +13,12 @@ interface AccountLocalSource {
     fun getMap(): Map<String, String>
 
     fun removeMap()
+
+    fun clear()
+
+    fun commit()
+
+    fun apply()
 }
 
 class User {
