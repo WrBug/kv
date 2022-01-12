@@ -19,20 +19,20 @@ interface DataProvider {
     fun getString(key: String?, defaultValue: String?): String?
 
     fun putInt(key: String?, value: Int)
-    fun getInt(key: String?, value: Int): Int
+    fun getInt(key: String?, defaultValue: Int): Int
 
     fun putLong(key: String?, value: Long)
-    fun getLong(key: String?, value: Long): Long
+    fun getLong(key: String?, defaultValue: Long): Long
 
     fun putFloat(key: String?, value: Float)
-    fun getFloat(key: String?, value: Float): Float
+    fun getFloat(key: String?, defaultValue: Float): Float
 
 
     fun putDouble(key: String?, value: Double)
-    fun getDouble(key: String?, value: Double): Double
+    fun getDouble(key: String?, defaultValue: Double): Double
 
     fun putBoolean(key: String?, value: Boolean)
-    fun getBoolean(key: String?, value: Boolean): Boolean
+    fun getBoolean(key: String?, defaultValue: Boolean): Boolean
 
     fun remove(key: String?)
 

@@ -48,6 +48,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation("com.android.support.constraint:constraint-layout:1.1.3")
+    implementation("com.tencent:mmkv:1.2.11"){
+        exclude(group="androidx.annotation")
+    }
     implementation(project(":kv-annotation"))
     implementation(project(":kv"))
     implementation(project(":test_module"))
