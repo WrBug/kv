@@ -1,12 +1,28 @@
-apply plugin: 'maven'
-group = 'com.wrbug.kv'
-version = '1.0.0'
+def localProps = new Properties()
+localProps.load(project.rootProject.file('local.properties').newDataInputStream())
+def pulishLocal = localProps.get("pulishLocal")
+group = GROUP
+version = VERSION_NAME
 project.archivesBaseName = project.getName()
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            //本地的Maven地址设置为 repos
-            repository(url: uri("$rootDir/repo"))
+if (pulishLocal == null || pulishLocal == 'true') {
+    apply plugin: 'maven'
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                //本地的Maven地址设置为 repos
+                repository(url: uri("$rootDir/repo"))
+            }
+        }
+    }
+    return
+}
+
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
         }
     }
 }
+
+apply plugin: "com.vanniktech.maven.publish"

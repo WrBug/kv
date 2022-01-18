@@ -4,7 +4,7 @@ buildscript {
     extra["ignoreGradle"] = false
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven("$rootDir/repo")
     }
     val kotlin_version: String by extra
@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
         if (!ignoreGradle) {
             classpath("com.wrbug.kv:kv-gradle:1.0.0")
         }
@@ -23,7 +24,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven("$rootDir/repo")
     }
 }
