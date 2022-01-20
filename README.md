@@ -1,11 +1,10 @@
-# KV 一款Android端0反射的持久化存储封装
+# KV 一款Android端基于注解的0反射的持久化存储封装
 
 [![license](https://img.shields.io/github/license/WrBug/kv.svg?style=flat-square)](https://github.com/WrBug/kv/blob/master/LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/com.wrbug.kv/kv.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:com.wrbug.kv)
 [![](https://img.shields.io/github/last-commit/WrBug/kv.svg?style=flat-square)](https://github.com/WrBug/kv/commits)
-[![](https://img.shields.io/travis/WrBug/kv.svg?style=flat-square)](https://travis-ci.org/WrBug/kv)
 
-> 告别需要定义key的烦恼，几行到没轻松接入使用，支持 **sharedpreference** **mmkv** 等持久化方案，支持跨模块调用
+> 告别需要定义key的烦恼，几行代码轻松接入使用，支持 **sharedpreference** **mmkv** 等持久化方案，支持跨模块调用
 
 ## 快速接入
 
